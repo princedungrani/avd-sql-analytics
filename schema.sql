@@ -1,0 +1,37 @@
+
+CREATE TABLE IF NOT EXISTS sessions (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  user_upn VARCHAR(255) NOT NULL,
+  host_name VARCHAR(128) NOT NULL,
+  logon_time DATETIME NOT NULL,
+  last_heartbeat DATETIME NOT NULL,
+  state ENUM('Active','Disconnected','Orphaned') NOT NULL DEFAULT 'Active',
+  gpo_time_ms INT DEFAULT NULL,
+  profile_size_mb INT DEFAULT NULL,
+  image_version VARCHAR(64) DEFAULT NULL,
+  agent_version VARCHAR(64) DEFAULT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS fslogix_events (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  user_upn VARCHAR(255) NOT NULL,
+  host_name VARCHAR(128) NOT NULL,
+  event_time DATETIME NOT NULL,
+  event_type ENUM('MountSuccess','MountFailure') NOT NULL,
+  error_code VARCHAR(32) DEFAULT NULL,
+  vhd_path VARCHAR(512) DEFAULT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS app_events (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  user_upn VARCHAR(255) NOT NULL,
+  app_name VARCHAR(255) NOT NULL,
+  host_name VARCHAR(128) NOT NULL,
+  launch_time DATETIME NOT NULL,
+  duration_ms INT DEFAULT NULL,
+  status ENUM('OK','ERROR') NOT NULL,
+  error_code VARCHAR(32) DEFAULT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
